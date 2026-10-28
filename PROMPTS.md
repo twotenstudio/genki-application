@@ -1,93 +1,243 @@
-# Prompts
+# Development Prompts & Implementation Notes
 
-The prompts I gave Claude Code while building this page, in order. For each one: what was good about the output, and what I changed or rejected and why. The plan from step 2 is in [PLAN.md](PLAN.md).
+This document outlines the sequential prompts used with Claude Code throughout the development lifecycle, alongside an evaluation of the generated implementations, architectural decisions, and subsequent refinements.
 
-The page shows the same steps from `src/data/agent-steps.json`. A test fails if the two drift apart.
+The initial implementation plan is documented in [PLAN.md](PLAN.md).
 
-## 1. Project rules
+The steps displayed on the site are sourced from `src/data/agent-steps.json`, providing a single source of truth. An automated test validates consistency between the rendered content and this documentation to prevent divergence.
 
-```
-Create a CLAUDE.md for this project. It's a one-page job application site built with Astro, TypeScript and SCSS Modules, deployed to Cloudflare Pages.
+## 1. Establish Project Standards
 
-Rules:
-- TypeScript strict mode, no `any`
-- SCSS Modules only, no global styles except a small reset and design tokens
-- Accessibility first: semantic HTML, visible focus states, WCAG 2.2 AA contrast, works without JavaScript except the one React island
-- Keep JavaScript shipped to the browser to a minimum
-- Every change must pass lint, type check and the Playwright smoke test before it's done
-- Ask me before adding any dependency
-```
-
-**Worked:** It turned my rules into a definition of done with the exact commands to run, so every later step had something concrete to check against.
-
-**Changed:** I added two rules of my own: use my copy exactly as written and flag anything that looks wrong instead of rewriting it, and no em dashes anywhere.
-
-## 2. Plan first
+**Prompt**
 
 ```
-Read CLAUDE.md. Plan the site before writing code. Propose the file structure, the components, the design tokens and the CI setup. Don't write any code yet. Keep the plan short and point out anything you're unsure about.
+Generate a CLAUDE.md containing the project's architecture, coding conventions, technical constraints, and development standards.
+
+Stack:
+- Astro 7
+- TypeScript (strict mode)
+- SCSS Modules
+- React (isolated interactive components)
+- Cloudflare Pages
+
+Requirements:
+- Enforce strict TypeScript typing. Avoid `any`.
+- Use component-scoped SCSS Modules, with global CSS restricted to resets and design tokens.
+- Prioritise semantic HTML, WCAG 2.2 AA accessibility, keyboard navigation, and progressive enhancement.
+- Minimise client-side JavaScript and unnecessary hydration.
+- Require linting, type checking, and Playwright smoke tests before considering a task complete.
+- Do not introduce dependencies without approval.
+
+Define explicit acceptance criteria and validation commands.
 ```
 
-**Worked:** It flagged the real risks up front: Astro's inline hydration scripts under a strict CSP, and layout shift when the plain list turns into tabs.
+**Implementation:** Generated a centralised development specification with enforceable coding standards, validation commands, and a consistent definition of done. This provided a repeatable quality gate for subsequent implementation tasks.
 
-**Changed:** It planned a custom post-build script to hash inline scripts into the CSP. Astro 7 has this built in as security.csp, so I dropped the script and kept _headers for the one directive a meta tag can't carry.
+**Refinement:** Introduced strict content-integrity requirements to prevent AI-generated copy modifications. Added a restriction on em dashes and required potentially incorrect content to be flagged rather than automatically rewritten.
 
-## 3. Scaffold and tooling
+## 2. Architecture & Implementation Planning
 
-```
-Scaffold the Astro project from the agreed plan. Add ESLint, Prettier, a strict tsconfig, Playwright with one smoke test that loads the page and checks the main headings, and a GitHub Actions workflow that runs lint, type check, the Playwright test and a Lighthouse check on every pull request. Don't build the page content yet.
-```
-
-**Worked:** A strict tsconfig, a flat ESLint config and a CI workflow that runs the same commands as the definition of done, in the same order.
-
-**Changed:** Latest everything didn't fit together. Astro 7 needs a newer Node than I had, so I pinned Node 24 LTS. TypeScript 7 isn't supported by typescript-eslint or astro check yet, so I pinned 6.0, and I used the maintained fork of jsx-a11y because the original doesn't support ESLint 10. Astro 7 also backgrounds its preview server when it detects an AI agent, which left Playwright's server running after the tests, so the test server runs with --ignore-lock.
-
-## 4. Build the sections
+**Prompt**
 
 ```
-Build the page sections from the plan as Astro components with SCSS Modules. Use the content in content.md exactly as written, don't rewrite my copy. Mobile first, then tablet and desktop. No JavaScript yet.
+Review CLAUDE.md and produce a technical implementation plan before generating application code.
+
+Include:
+- Proposed directory structure
+- Component architecture and responsibilities
+- Design token strategy
+- Client/server rendering boundaries
+- Accessibility considerations
+- CI/CD pipeline configuration
+- Potential implementation risks
+
+Keep the plan concise. Identify uncertainties and architectural trade-offs. Do not implement anything yet.
 ```
 
-**Worked:** Each section is one Astro component and one SCSS Module, and the copy matches content.md word for word.
+**Implementation:** Identified two significant architectural considerations: Content Security Policy compatibility with Astro's hydration scripts, and cumulative layout shift caused by transitioning server-rendered content into interactive tabs.
 
-**Changed:** It added a skip link, but there's no navigation before the main content, so it skipped nothing. I took it out.
+**Refinement:** Rejected a proposed custom post-build script for generating CSP script hashes. Astro 7 provides native CSP support through `security.csp`, eliminating the need for custom hashing infrastructure. Retained Cloudflare's `_headers` configuration for directives unsupported by meta-based CSP.
 
-## 5. The prompts island
+## 3. Project Scaffolding & CI Configuration
 
-```
-Build one React island for the "How I work with AI agents" section. It reads steps from a typed JSON file (prompt, what worked, what I changed). It should be keyboard accessible, work with a screen reader, and show all steps as a plain list if JavaScript is off. Keep it small.
-```
-
-**Worked:** The server renders every step as a list. After hydration it becomes a proper ARIA tabs pattern with arrow keys, Home and End, so readers without JavaScript lose nothing.
-
-**Changed:** On a phone-sized screen the seven tabs wrapped onto two rows, and the prompts rendered in Courier because browsers give <code> its own monospace font. The tabs now share one row below desktop, and the reset points code at the mono token.
-
-## 6. Review pass
+**Prompt**
 
 ```
-Review the whole project as a senior engineer would before a release. Check accessibility, performance, security headers for Cloudflare Pages, unused code and anything that breaks the rules in CLAUDE.md. List the issues first, then fix them one at a time with a short note on each.
+Initialise the Astro application using the approved architecture.
+
+Configure:
+- Strict TypeScript configuration
+- ESLint flat configuration
+- Prettier formatting
+- Playwright browser testing
+- GitHub Actions CI
+- Lighthouse performance auditing
+
+Create a baseline Playwright smoke test that verifies successful page rendering and the presence of primary document headings.
+
+Configure CI to execute linting, type checking, browser tests, and Lighthouse auditing on pull requests.
+
+Do not implement the application content at this stage.
 ```
 
-**Worked:** I ran the review as a separate agent, so it wasn't marking its own work. It found 11 issues, and the best were ones my tests had missed: the Previous and Next buttons hid their own panel and dropped keyboard focus, and on phones the list collapsed by about 3,700px when the island hydrated.
+**Implementation:** Established a fully configured development environment with strict compiler settings, consistent static analysis, and an automated CI pipeline aligned with the project's acceptance criteria.
 
-**Changed:** I fixed 10 of the 11, two of them my own way. Fixing the collapse meant reversing my plan: the island now hydrates with client:idle soon after load, not with client:visible as the reader scrolls towards it. It suggested a nowrap class in the page to stop "non-engineers" breaking at the hyphen, but I made the section heading keep hyphenated words whole so the copy stays exactly as written. I kept PLAN.md as the record of the plan and added a note instead of editing it. The broken repo link gets fixed by publishing the repo, not by code.
+**Refinement:** Resolved several upstream compatibility constraints:
 
-## 7. Security headers and deploy
+- Standardised on Node.js 24 LTS to satisfy Astro 7 runtime requirements.
+- Pinned TypeScript 6.0 due to compatibility limitations in `typescript-eslint` and Astro's type-checking tooling.
+- Replaced the original JSX accessibility ESLint package with a maintained fork supporting ESLint 10.
+- Configured Astro's preview server with `--ignore-lock` to prevent orphaned server processes during agent-driven Playwright execution.
 
-```
-Add a Cloudflare Pages _headers file with a sensible Content Security Policy, HSTS, X-Content-Type-Options, Referrer-Policy and Permissions-Policy. Make sure the React island still works under the CSP. Then write a short README covering how to run it locally, how CI works and how deploys happen.
-```
+## 4. Component Implementation
 
-**Worked:** The headers file and README came out short and accurate. The island already worked under the CSP because Astro hashes its own inline scripts, so the header only adds what a meta tag can't set.
-
-**Changed:** I didn't take "it works under the CSP" on trust. I deleted one hash from the built page and checked the island test failed. The review later pointed out that nothing checked the CSP existed at all, so there's a test for that now too.
-
-## 8. Make it a game
+**Prompt**
 
 ```
-I want it to be like a little game where you fly around islands to the different CV sections. Animated.
+Implement the page sections defined in the approved architecture.
+
+Requirements:
+- Use Astro components for static content.
+- Use SCSS Modules for component-level styling.
+- Preserve all content from content.md verbatim.
+- Follow a mobile-first responsive implementation.
+- Implement tablet and desktop layouts through progressive enhancement.
+- Use semantic HTML and accessible document structure.
+- Do not introduce client-side JavaScript.
+
+Maintain clear component boundaries and avoid unnecessary abstraction.
 ```
 
-**Worked:** It kept the page underneath. The map is a layer on top: plain TypeScript on a canvas, no new dependencies, and every section opens as a panel from its island. Without JavaScript it's still the page, reduced motion opens as the page, and an Islands list gives keyboard and screen reader users the same journeys. Lighthouse still scores 100.
+**Implementation:** Created a modular component architecture, with each section encapsulated in its own Astro component and associated SCSS Module. Content was preserved without modification, and responsive behaviour was implemented through CSS.
 
-**Changed:** Astro hashes the scripts it bundles into the CSP, but not inline ones, so the script that picks the map or the page before first paint would have been blocked. It's now hashed from the same file it's inlined from, and sits after the CSP meta tag, because a meta CSP only covers what comes after it. The first screenshots also showed a "Land on Home" prompt the moment the plane took off, so it now ignores the island you've just left.
+**Refinement:** Removed an automatically generated skip-navigation link. As the document had no preceding navigation region, the link provided no meaningful navigation shortcut and introduced unnecessary interface complexity.
+
+## 5. Interactive React Island
+
+**Prompt**
+
+```
+Implement an isolated React island for the "How I work with AI agents" section.
+
+Data requirements:
+- Load content from a typed JSON data source.
+- Each entry must contain the original prompt, implementation outcome, and subsequent changes.
+
+Interaction requirements:
+- Implement the WAI-ARIA tabs pattern.
+- Support keyboard navigation using arrow keys, Home, and End.
+- Maintain appropriate focus management and screen reader semantics.
+- Server-render all content as a readable list before hydration.
+- Preserve complete functionality and content access when JavaScript is disabled.
+- Minimise the client-side bundle and hydration overhead.
+```
+
+**Implementation:** Built a progressively enhanced interface that initially renders all entries as static HTML. Following hydration, React enhances the content into an accessible tabbed interface with keyboard interaction and appropriate ARIA relationships.
+
+**Refinement:** Corrected responsive tab navigation after the seven-tab layout wrapped across multiple rows at smaller viewport widths. Consolidated the tabs into a single horizontal row below desktop breakpoints. Also normalised `<code>` typography to use the project's monospace design token rather than browser defaults.
+
+## 6. Independent Engineering Review
+
+**Prompt**
+
+```
+Perform an independent pre-release code review against CLAUDE.md.
+
+Audit:
+- Component architecture and maintainability
+- Accessibility and keyboard interaction
+- Hydration behaviour and layout stability
+- Runtime performance and JavaScript payload
+- Cloudflare Pages security configuration
+- Unused code and unnecessary dependencies
+- Test coverage and potential regressions
+
+Report findings before applying changes.
+
+Prioritise issues by severity and address them individually, documenting the rationale for each fix.
+```
+
+**Implementation:** Executed the review using a separate agent to reduce implementation bias. The audit identified 11 issues, including two significant interaction defects:
+
+- Previous/Next navigation could unmount the active panel while keyboard focus remained within it, resulting in lost focus.
+- Hydration caused approximately 3,700px of vertical layout collapse on mobile devices as the static list transitioned into the tab interface.
+
+**Refinement:** Resolved 10 of the 11 findings, with some solutions differing from the agent's recommendations.
+
+Changed the React island's hydration directive from `client:visible` to `client:idle`. This ensured the interactive layout initialised shortly after page load rather than introducing substantial layout shifts when the section entered the viewport.
+
+Replaced a proposed content-specific `nowrap` utility with a reusable heading-level treatment for hyphenated words, preserving the original copy.
+
+Retained `PLAN.md` as an immutable record of the initial architecture, documenting deviations rather than retroactively modifying the plan.
+
+The remaining repository-link issue was classified as a deployment/publication task rather than an application defect.
+
+## 7. Security Hardening & Deployment
+
+**Prompt**
+
+```
+Configure production security headers for Cloudflare Pages.
+
+Implement:
+- Content Security Policy (CSP)
+- HTTP Strict Transport Security (HSTS)
+- X-Content-Type-Options
+- Referrer-Policy
+- Permissions-Policy
+
+Ensure Astro's generated scripts and the React island remain compatible with the CSP.
+
+Create a concise README documenting:
+- Local development
+- Available validation commands
+- CI pipeline behaviour
+- Production build and deployment process
+
+Validate the production build rather than relying exclusively on development-server behaviour.
+```
+
+**Implementation:** Added Cloudflare Pages security configuration and deployment documentation. Used Astro's native CSP handling for generated inline scripts, with `_headers` providing directives that cannot be enforced through a CSP meta element.
+
+**Refinement:** Introduced negative testing to verify that CSP enforcement was functional rather than simply present.
+
+Removed a valid script hash from the generated output and confirmed that the associated browser test failed as expected. Added a separate assertion verifying that the production document includes the required CSP configuration.
+
+This established regression coverage for both CSP presence and script execution restrictions.
+
+## 8. Interactive Canvas Navigation
+
+**Prompt**
+
+```
+Extend the existing application with a game-like navigation experience.
+
+Concept:
+Create an animated world consisting of multiple islands, each representing a section of the CV. Users should be able to fly between islands and open the corresponding content.
+
+Technical requirements:
+- Use the Canvas API with vanilla TypeScript.
+- Avoid additional runtime dependencies.
+- Preserve the existing Astro page as the accessible baseline.
+- Treat the interactive world as a progressive enhancement layer.
+- Provide equivalent keyboard and screen reader navigation.
+- Respect prefers-reduced-motion.
+- Ensure content remains accessible without JavaScript.
+- Maintain existing performance and accessibility targets.
+```
+
+**Implementation:** Introduced a lightweight canvas-based navigation layer without replacing the underlying document architecture.
+
+The implementation uses native TypeScript and browser rendering APIs, avoiding additional frameworks or rendering dependencies.
+
+Each island maps to an existing content section, which opens in an associated panel. A parallel island-navigation list provides equivalent access for keyboard and assistive technology users.
+
+The application falls back to the standard page when JavaScript is unavailable or reduced motion is preferred. Lighthouse continued to report a score of 100.
+
+**Refinement:** Addressed a CSP limitation involving the inline bootstrap script responsible for selecting the initial rendering mode.
+
+Astro automatically hashes scripts managed by its build pipeline, but manually inlined scripts require explicit handling. The bootstrap script's hash is now generated from the same source used to inline it, ensuring consistency between the executable content and CSP declaration.
+
+The bootstrap script is positioned after the CSP meta element to ensure the policy applies during execution.
+
+Also corrected the initial navigation state: the proximity detection previously triggered a "Land on Home" action immediately after departure. The navigation controller now excludes the island the player has just left until the departure state has completed.

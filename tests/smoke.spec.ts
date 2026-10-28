@@ -154,7 +154,10 @@ test.describe('without JavaScript', () => {
 
     const section = page.getByRole('region', { name: 'How I work with AI agents' });
     await expect(section.getByRole('tab')).toHaveCount(0);
-    await expect(section.getByRole('listitem')).toHaveCount(agentSteps.length);
+    // Only the steps themselves: their notes can hold bullet lists of their own.
+    await expect(section.locator('ol').first().locator(':scope > li')).toHaveCount(
+      agentSteps.length,
+    );
     for (const step of agentSteps) {
       await expect(section.getByRole('heading', { name: step.title })).toBeVisible();
     }
