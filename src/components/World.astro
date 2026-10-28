@@ -1,0 +1,49 @@
+---
+import { sections } from '../data/sections';
+import styles from './World.module.scss';
+---
+
+<div class={styles.world} data-world>
+  <canvas class={styles.canvas} data-world-canvas aria-hidden="true"></canvas>
+  <div class={styles.shade} aria-hidden="true"></div>
+
+  <a class={styles.brand} href="#home" data-island="home" data-label="Home" data-number="">
+    <span class={styles.brandName}>Liam Trubshaw</span>
+    <span class={styles.brandRole}>Lead Web Engineer application for Genki</span>
+  </a>
+
+  <nav class={styles.nav} aria-label="Islands">
+    <ol class={styles.navList}>
+      {sections.map((entry) => (
+        <li>
+          <a
+            class={styles.navLink}
+            href={`#${entry.id}`}
+            data-island={entry.id}
+            data-label={entry.title}
+            data-number={entry.number}
+          >
+            <span class={styles.navNumber}>{entry.number}</span>
+            <span class={styles.navTitle}>{entry.title}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <div class={styles.bottom}>
+    <button type="button" class={styles.land} data-land hidden>
+      Land
+    </button>
+    <p class={styles.hint}>
+      <span class={styles.hintPointer}>Fly with the arrow keys or WASD, or click an island.</span>
+      <span class={styles.hintTouch}>Tap an island to fly there.</span>
+    </p>
+  </div>
+
+  <p class={styles.announce} aria-live="polite" data-announce></p>
+</div>
+
+<script>
+  import '../game/main';
+</script>

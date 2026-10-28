@@ -4,6 +4,16 @@ My application for the Lead Web Engineer role at Genki, built as a small one-pag
 
 I built it with Claude Code. The prompts I used, what worked and what I changed are in [`PROMPTS.md`](PROMPTS.md), and the rules the agent worked to are in [`CLAUDE.md`](CLAUDE.md).
 
+## The island map
+
+On a first visit the page opens as a small game: you fly a seaplane between islands, and landing on one opens that section of the application. It's a layer over the page, not a replacement.
+
+- **Controls:** arrow keys or WASD to fly, Enter to land, or click or tap an island to fly there automatically. Escape or "Back to the map" closes a section.
+- **Accessibility:** the canvas is decorative. The Islands list holds real links, so keyboard and screen reader users get the same journeys, with landings announced and focus moved into each panel.
+- **The page is always there:** without JavaScript, with `prefers-reduced-motion`, or after "Read as a page", the page reads as a normal page. The choice is remembered.
+- **Deep links:** `/#agents` opens that island's panel straight away.
+- **How it's built:** `src/game/` is plain TypeScript and canvas, with no framework and no dependencies. Islands are pre-rendered once per resize, and only the moving parts (waves, the lighthouse beam, the crane hook, the plane) are drawn each frame. Map colours are CSS custom properties, so dark mode turns day into night.
+
 ## Run it locally
 
 You need Node 24 (see `.nvmrc`). Astro 7 needs Node 22.23 or newer.
@@ -32,7 +42,7 @@ npm test             # Playwright smoke test against the built site
 1. Lint and format check
 2. Type check
 3. Build
-4. Playwright smoke test, desktop and mobile Chromium. It checks the headings, that the React island hydrates under the CSP and works from the keyboard, that the page works with JavaScript off, that the CV link serves a PDF and that `_headers` sets the security headers.
+4. Playwright smoke test, desktop and mobile Chromium. It flies to an island and back, checks deep links, the view toggle and reduced motion, the headings and keyboard tabs on the page, that the page works with JavaScript off, that every inline script is allowed by a CSP hash, that the CV link serves a PDF and that `_headers` sets the security headers.
 5. Lighthouse CI on the built site with mobile settings. It fails the build if performance, accessibility, best practices or SEO drop below 95.
 
 A failing Playwright run uploads its report and traces as an artifact. Dependabot opens weekly pull requests for npm packages and GitHub Actions, and they go through the same checks.

@@ -1,0 +1,263 @@
+@use '../styles/mq';
+@use '../styles/utils';
+
+// Map colours, read by src/game/draw.ts: day in light mode, night in dark mode.
+.world {
+  --world-night: 0;
+  --world-sea-deep: #4f9fa3;
+  --world-sea: #7cc4bd;
+  --world-shallow: #a9e0d2;
+  --world-foam: #ffffff;
+  --world-glint: #ffffff;
+  --world-sand: #f3e2b3;
+  --world-sand-shade: #dcc58d;
+  --world-grass: #74bf6e;
+  --world-grass-shade: #4f9a58;
+  --world-wood: #8f6440;
+  --world-wall: #fbf6ea;
+  --world-roof: #e0694c;
+  --world-metal: #dfe5e7;
+  --world-metal-shade: #8fa3aa;
+  --world-accent: #0a6650;
+  --world-lamp: #ffcf5c;
+  --world-window: #2e5566;
+  --world-shadow: rgb(16 60 70 / 22%);
+  --world-cloud: rgb(255 255 255 / 55%);
+  --world-plane: #fbfaf6;
+  --world-plane-trim: #2e5566;
+  --world-label: rgb(255 255 255 / 92%);
+  --world-label-text: #16161b;
+
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .world {
+    --world-night: 1;
+    --world-sea-deep: #07141c;
+    --world-sea: #0d2532;
+    --world-shallow: #18414a;
+    --world-foam: rgb(190 230 240 / 60%);
+    --world-glint: #cfe3ff;
+    --world-sand: #a8976a;
+    --world-sand-shade: #84744e;
+    --world-grass: #2f6a48;
+    --world-grass-shade: #23523a;
+    --world-wood: #6b4a30;
+    --world-wall: #cfc9b8;
+    --world-roof: #a8503b;
+    --world-metal: #9aa8ad;
+    --world-metal-shade: #5f6f75;
+    --world-accent: #5fcfaa;
+    --world-lamp: #ffd36b;
+    --world-window: #ffd36b;
+    --world-shadow: rgb(0 0 0 / 35%);
+    --world-cloud: rgb(200 215 235 / 10%);
+    --world-plane: #e8e6df;
+    --world-plane-trim: #3b6b7d;
+    --world-label: rgb(26 27 32 / 92%);
+    --world-label-text: #ecebe6;
+  }
+}
+
+:global(.game) .world {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  overflow: hidden;
+  background: var(--world-sea);
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  background: rgb(8 20 28 / 0%);
+  pointer-events: none;
+  transition: background 250ms;
+}
+
+:global(html[data-panel]) .shade {
+  background: rgb(8 20 28 / 30%);
+}
+
+.brand {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 2;
+  display: grid;
+  max-width: calc(100vw - 14rem);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  text-decoration: none;
+  box-shadow: var(--shadow);
+
+  &[aria-current] {
+    border-color: var(--color-accent);
+  }
+}
+
+.brandName {
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.brandRole {
+  display: none;
+
+  @include utils.eyebrow;
+
+  font-size: 0.6875rem;
+
+  @include mq.tablet {
+    display: block;
+  }
+}
+
+.nav {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  left: var(--space-3);
+  z-index: 2;
+  padding: var(--space-2);
+  border-radius: calc(var(--radius) + var(--space-2));
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  backdrop-filter: blur(8px);
+
+  @include mq.desktop {
+    top: 6.5rem;
+    right: auto;
+    bottom: auto;
+    width: 20rem;
+    padding: 0;
+    background: none;
+    backdrop-filter: none;
+  }
+}
+
+.navList {
+  display: flex;
+  gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+
+  > li {
+    flex: 1 1 0;
+  }
+
+  @include mq.desktop {
+    flex-direction: column;
+  }
+}
+
+.navLink {
+  @include utils.pill;
+
+  width: 100%;
+  border-color: var(--color-border);
+  box-shadow: var(--shadow);
+
+  &[aria-current] {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  @include mq.desktop {
+    justify-content: flex-start;
+    border-radius: var(--radius-small);
+    white-space: normal;
+    text-align: left;
+  }
+}
+
+.navNumber {
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+
+  .navLink[aria-current] & {
+    color: inherit;
+  }
+}
+
+// Phones show numbers only; the title stays in the accessible name and on the map's labels.
+.navTitle {
+  @include utils.visually-hidden;
+
+  @include mq.desktop {
+    @include utils.show-visually;
+  }
+}
+
+.bottom {
+  position: absolute;
+  bottom: calc(2.75rem + 2 * var(--space-2) + 2 * var(--space-3));
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  gap: var(--space-2);
+  justify-items: center;
+  width: max-content;
+  max-width: calc(100vw - 2 * var(--space-3));
+  translate: -50% 0;
+
+  // Bottom left on desktop, clear of the panels on the right.
+  @include mq.desktop {
+    bottom: var(--space-4);
+    left: var(--space-3);
+    justify-items: start;
+    translate: none;
+  }
+}
+
+.land {
+  @include utils.pill($filled: true);
+
+  box-shadow: var(--shadow);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.hint {
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  color: var(--color-ink);
+  font-size: var(--step--1);
+  text-align: center;
+}
+
+.hintTouch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .hintPointer {
+    display: none;
+  }
+
+  .hintTouch {
+    display: inline;
+  }
+}
+
+.announce {
+  @include utils.visually-hidden;
+}

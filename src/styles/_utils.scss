@@ -1,5 +1,7 @@
 // Shared mixins for SCSS Modules. These emit nothing on their own.
 
+@use 'mq';
+
 @mixin visually-hidden {
   position: absolute;
   width: 1px;
@@ -18,4 +20,79 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-ink-muted);
+}
+
+@mixin show-visually {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+}
+
+// A pill button, plain or filled with the accent colour.
+@mixin pill($filled: false, $display: inline-flex) {
+  display: $display;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-ink-muted);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: var(--step--1);
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--color-accent);
+  }
+
+  @if $filled {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+
+    &:hover {
+      filter: brightness(1.08);
+    }
+  }
+}
+
+// The panel a section opens in on the map: a bottom sheet on phones, a side sheet from tablet up.
+@mixin sheet {
+  position: fixed;
+  z-index: 3;
+  inset: auto var(--space-2) var(--space-2);
+  max-height: calc(100svh - 4.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-5);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: 0 12px 48px rgb(0 0 0 / 28%);
+
+  @include mq.tablet {
+    inset: 4.5rem var(--space-4) var(--space-4) auto;
+    width: min(44rem, calc(100vw - 2 * var(--space-4)));
+    max-height: none;
+    padding: var(--space-6);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      opacity 250ms ease-out,
+      translate 250ms ease-out;
+
+    @starting-style {
+      opacity: 0;
+      translate: 0 1.5rem;
+    }
+  }
 }

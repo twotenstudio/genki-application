@@ -97,3 +97,15 @@ This page is built and deployed the same way.
 **Body:** There's nothing at this address.
 
 **Link:** Go to the application
+
+## Island map
+
+- **View toggle:** Explore the islands / Read as a page
+- **Welcome button:** Start flying
+- **Panel button:** Back to the map
+- **Islands list label (screen readers):** Islands
+- **Home island label:** Home
+- **Hint (mouse and keyboard):** Fly with the arrow keys or WASD, or click an island.
+- **Hint (touch):** Tap an island to fly there.
+- **Landing button:** Land on {island}
+- **Screen reader announcements:** Flying to {island}. / {island} is below you. Press Enter to land. / Landed on {island}. / You are flying. Choose an island from the list, or use the arrow keys.

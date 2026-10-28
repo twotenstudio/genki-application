@@ -14,12 +14,12 @@ const { id, number, title } = Astro.props;
 const words = title.split(' ');
 ---
 
-<section id={id} class={styles.section} aria-labelledby={`${id}-heading`}>
+<section id={id} class={styles.section} aria-labelledby={`${id}-heading`} data-island-section>
   <header class={styles.header}>
     <p class={styles.number} aria-hidden="true">
       {number}
     </p>
-    <h2 id={`${id}-heading`} class={styles.title}>
+    <h2 id={`${id}-heading`} class={styles.title} tabindex="-1">
       {words.map((word, index) => (
         <>
           {index > 0 && ' '}
@@ -27,6 +27,10 @@ const words = title.split(' ');
         </>
       ))}
     </h2>
+    {/* Only shown on the map, where each section opens as a panel. */}
+    <button type="button" class={styles.close} data-island-close>
+      Back to the map
+    </button>
   </header>
   <div class={styles.body}>
     <slot />

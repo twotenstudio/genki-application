@@ -2,9 +2,11 @@
 import styles from './Intro.module.scss';
 ---
 
-<header class={styles.intro}>
+<header id="home" class={styles.intro} data-intro>
   <p class={styles.eyebrow}>Lead Web Engineer application for Genki</p>
-  <h1 class={styles.name}>Liam Trubshaw</h1>
+  <h1 class={styles.name} tabindex="-1">
+    Liam Trubshaw
+  </h1>
   <div class={styles.copy}>
     <p class={styles.lede}>
       I'm a hands-on engineering lead in London. I've owned technical direction at TwoTen Studio for
@@ -16,4 +18,8 @@ import styles from './Intro.module.scss';
       deploy pipeline.
     </p>
   </div>
+  {/* Only shown on the map, where the intro is the welcome panel. */}
+  <button type="button" class={styles.start} data-game-start>
+    Start flying
+  </button>
 </header>

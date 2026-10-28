@@ -6,6 +6,9 @@ import Links from '../components/Links.astro';
 import Projects from '../components/Projects.astro';
 import Section from '../components/Section.astro';
 import ShipSafely from '../components/ShipSafely.astro';
+import ViewToggle from '../components/ViewToggle.astro';
+import World from '../components/World.astro';
+import { section } from '../data/sections';
 import Base from '../layouts/Base.astro';
 ---
 
@@ -14,20 +17,22 @@ import Base from '../layouts/Base.astro';
   description="Liam Trubshaw's application for Lead Web Engineer at Genki: what I've built, an architectural bet I lived with, and how I work with AI agents."
 >
   <main>
+    <ViewToggle />
     <Intro />
-    <Section id="built" number="01" title="What I've built">
+    <World />
+    <Section {...section('built')}>
       <Projects />
     </Section>
-    <Section id="bet" number="02" title="An architectural bet I lived with">
+    <Section {...section('bet')}>
       <ArchitecturalBet />
     </Section>
-    <Section id="agents" number="03" title="How I work with AI agents">
+    <Section {...section('agents')}>
       <AgentWork />
     </Section>
-    <Section id="ship-safely" number="04" title="Letting non-engineers ship safely">
+    <Section {...section('ship-safely')}>
       <ShipSafely />
     </Section>
-    <Section id="links" number="05" title="Links">
+    <Section {...section('links')}>
       <Links />
     </Section>
   </main>

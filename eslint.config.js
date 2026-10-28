@@ -20,6 +20,19 @@ export default defineConfig(
     },
   },
   {
+    // Inlined into <head> as a classic script, so it only sees browser globals.
+    files: ['src/scripts/**/*.js'],
+    languageOptions: {
+      sourceType: 'script',
+      globals: {
+        document: 'readonly',
+        localStorage: 'readonly',
+        matchMedia: 'readonly',
+        setTimeout: 'readonly',
+      },
+    },
+  },
+  {
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',

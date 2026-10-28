@@ -1,0 +1,35 @@
+@use '../styles/utils';
+
+.toggle {
+  @include utils.pill;
+
+  position: absolute;
+  top: var(--space-4);
+  right: var(--gutter);
+  z-index: 4;
+  box-shadow: var(--shadow);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.toPage {
+  display: none;
+}
+
+:global(.game) {
+  .toggle {
+    position: fixed;
+    top: var(--space-3);
+    right: var(--space-3);
+  }
+
+  .toMap {
+    display: none;
+  }
+
+  .toPage {
+    display: inline;
+  }
+}

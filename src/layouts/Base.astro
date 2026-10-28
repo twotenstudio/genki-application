@@ -1,4 +1,6 @@
 ---
+import { createHash } from 'node:crypto';
+import chooseView from '../scripts/choose-view.js?raw';
 import '../styles/global.scss';
 import styles from './Base.module.scss';
 
@@ -8,6 +10,9 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+
+// Astro hashes the scripts it bundles, but not inline ones, so hash this one ourselves.
+Astro.csp?.insertScriptHash(`sha256-${createHash('sha256').update(chooseView).digest('base64')}`);
 ---
 
 <!doctype html>
@@ -25,6 +30,9 @@ const { title, description } = Astro.props;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
+    {/* First in <body>, not in <head>: Astro writes its CSP <meta> at the end of <head>, and a
+    meta CSP only covers what comes after it. It still runs before any content paints. */}
+    <script is:inline set:html={chooseView} />
     <div class={styles.page}>
       <slot />
     </div>

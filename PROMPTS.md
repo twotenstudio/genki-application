@@ -81,3 +81,13 @@ Add a Cloudflare Pages _headers file with a sensible Content Security Policy, HS
 **Worked:** The headers file and README came out short and accurate. The island already worked under the CSP because Astro hashes its own inline scripts, so the header only adds what a meta tag can't set.
 
 **Changed:** I didn't take "it works under the CSP" on trust. I deleted one hash from the built page and checked the island test failed. The review later pointed out that nothing checked the CSP existed at all, so there's a test for that now too.
+
+## 8. Make it a game
+
+```
+I want it to be like a little game where you fly around islands to the different CV sections. Animated.
+```
+
+**Worked:** It kept the page underneath. The map is a layer on top: plain TypeScript on a canvas, no new dependencies, and every section opens as a panel from its island. Without JavaScript it's still the page, reduced motion opens as the page, and an Islands list gives keyboard and screen reader users the same journeys. Lighthouse still scores 100.
+
+**Changed:** Astro hashes the scripts it bundles into the CSP, but not inline ones, so the script that picks the map or the page before first paint would have been blocked. It's now hashed from the same file it's inlined from, and sits after the CSP meta tag, because a meta CSP only covers what comes after it. The first screenshots also showed a "Land on Home" prompt the moment the plane took off, so it now ignores the island you've just left.

@@ -1,0 +1,9 @@
+---
+import styles from './ViewToggle.module.scss';
+---
+
+{/* Hidden until the map script runs, since the map needs JavaScript. */}
+<button type="button" class={styles.toggle} data-view-toggle hidden>
+  <span class={styles.toMap}>Explore the islands</span>
+  <span class={styles.toPage}>Read as a page</span>
+</button>

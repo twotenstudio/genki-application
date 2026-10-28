@@ -36,3 +36,36 @@
   line-height: 1.45;
   color: var(--color-ink);
 }
+
+// Hidden on the page; the map shows it.
+.start {
+  @include utils.pill($filled: true, $display: none);
+}
+
+// On the map the intro is the welcome panel, shown on the home island.
+:global(.game) {
+  .intro {
+    @include utils.sheet;
+
+    gap: var(--space-3);
+    align-content: start;
+
+    @include mq.tablet {
+      bottom: auto;
+    }
+  }
+
+  .intro[data-dismissed] {
+    display: none;
+  }
+
+  .name:focus {
+    outline: none;
+  }
+
+  .start {
+    display: inline-flex;
+    justify-self: start;
+    margin-top: var(--space-3);
+  }
+}
