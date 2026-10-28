@@ -71,3 +71,29 @@ This page is built and deployed the same way.
 - **CV:** Download my CV (PDF)
 
 **Footer:** Built with Astro, TypeScript and SCSS Modules. Hosted on Cloudflare Pages.
+
+## Page meta
+
+**Title:** Liam Trubshaw, Lead Web Engineer application for Genki
+
+**Description:** Liam Trubshaw's application for Lead Web Engineer at Genki: what I've built, an architectural bet I lived with, and how I work with AI agents.
+
+## Interface text
+
+- **Project tags list label (screen readers):** Technologies
+- **Step tabs label (screen readers):** Build steps
+- **Step heading:** Step 1 of 7
+- **Step parts:** The prompt / What worked / What I changed
+- **Step buttons:** Previous step / Next step
+
+## 404 page
+
+**Title:** Page not found, Liam Trubshaw
+
+**Description:** There's nothing at this address. Liam Trubshaw's application for Lead Web Engineer at Genki is on the home page.
+
+**Heading:** Page not found
+
+**Body:** There's nothing at this address.
+
+**Link:** Go to the application

@@ -8,6 +8,10 @@ interface Props {
 }
 
 const { id, number, title } = Astro.props;
+
+// Keep hyphenated words like "non-engineers" whole in the narrow desktop heading column,
+// without changing the copy itself.
+const words = title.split(' ');
 ---
 
 <section id={id} class={styles.section} aria-labelledby={`${id}-heading`}>
@@ -16,7 +20,12 @@ const { id, number, title } = Astro.props;
       {number}
     </p>
     <h2 id={`${id}-heading`} class={styles.title}>
-      {title}
+      {words.map((word, index) => (
+        <>
+          {index > 0 && ' '}
+          {word.includes('-') ? <span class={styles.nowrap}>{word}</span> : word}
+        </>
+      ))}
     </h2>
   </header>
   <div class={styles.body}>

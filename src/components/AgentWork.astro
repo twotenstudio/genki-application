@@ -13,6 +13,9 @@ import styles from './AgentWork.module.scss';
     </p>
     <p>These are the real prompts from building this page, with what worked and what I changed.</p>
   </div>
-  {/* Hydrates well before it scrolls into view, so the first load ships no JavaScript. */}
-  <AgentSteps client:visible={{ rootMargin: '600px' }} steps={agentSteps} />
+  {/*
+   * Hydrating swaps a long list for a short tab panel. client:idle does that soon after load,
+   * while the section is still below the fold, instead of while the reader scrolls towards it.
+   */}
+  <AgentSteps client:idle steps={agentSteps} />
 </div>

@@ -13,7 +13,7 @@ import Base from '../layouts/Base.astro';
   title="Liam Trubshaw, Lead Web Engineer application for Genki"
   description="Liam Trubshaw's application for Lead Web Engineer at Genki: what I've built, an architectural bet I lived with, and how I work with AI agents."
 >
-  <main id="main">
+  <main>
     <Intro />
     <Section id="built" number="01" title="What I've built">
       <Projects />
@@ -24,8 +24,7 @@ import Base from '../layouts/Base.astro';
     <Section id="agents" number="03" title="How I work with AI agents">
       <AgentWork />
     </Section>
-    {/* A non-breaking hyphen (U+2011) keeps "non-engineers" whole in the desktop heading column. */}
-    <Section id="ship-safely" number="04" title="Letting non‑engineers ship safely">
+    <Section id="ship-safely" number="04" title="Letting non-engineers ship safely">
       <ShipSafely />
     </Section>
     <Section id="links" number="05" title="Links">

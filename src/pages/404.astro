@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import styles from './404.module.scss';
+---
+
+<Base
+  title="Page not found, Liam Trubshaw"
+  description="There's nothing at this address. Liam Trubshaw's application for Lead Web Engineer at Genki is on the home page."
+>
+  <main class={styles.main}>
+    <h1 class={styles.title}>Page not found</h1>
+    <p>There's nothing at this address.</p>
+    <p>
+      <a href="/">Go to the application</a>
+    </p>
+  </main>
+</Base>

@@ -133,13 +133,14 @@ export default function AgentSteps({ steps }: Props) {
             {step.title}
           </h3>
           <StepBody step={step} />
+          {/* These buttons hide their own panel, so focus moves to the newly selected tab. */}
           <div className={styles.pager}>
             <button
               type="button"
               className={styles.pagerButton}
               disabled={index === 0}
               onClick={() => {
-                select(index - 1, false);
+                select(index - 1, true);
               }}
             >
               Previous step
@@ -149,7 +150,7 @@ export default function AgentSteps({ steps }: Props) {
               className={styles.pagerButton}
               disabled={index === last}
               onClick={() => {
-                select(index + 1, false);
+                select(index + 1, true);
               }}
             >
               Next step

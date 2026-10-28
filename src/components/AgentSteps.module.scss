@@ -45,6 +45,7 @@
   line-height: 1.55;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  text-wrap: wrap;
 }
 
 // No JavaScript: every step as a plain list.
@@ -107,6 +108,16 @@
     border-color: var(--color-accent);
     background: var(--color-accent);
     color: var(--color-on-accent);
+  }
+
+  // Forced colours replace the accent fill, so mark the selected tab with system colours.
+  @media (forced-colors: active) {
+    &[aria-selected='true'] {
+      forced-color-adjust: none;
+      border-color: Highlight;
+      background: Highlight;
+      color: HighlightText;
+    }
   }
 }
 
