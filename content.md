@@ -70,7 +70,7 @@ This page is built and deployed the same way.
 - **GitHub:** The source for this page, with the prompts and CI
 - **CV:** Download my CV (PDF)
 
-**Footer:** Built with Astro, TypeScript and SCSS Modules. Hosted on Cloudflare Pages.
+**Footer:** Built with Astro, TypeScript and SCSS Modules. Hosted on Cloudflare.
 
 ## Page meta
 
