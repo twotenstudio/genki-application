@@ -1,6 +1,8 @@
 # Genki application
 
-My application for the Lead Web Engineer role at Genki, built as a small one-page site with the same stack and guardrails I'd use at work: Astro, TypeScript, SCSS Modules, one React island, GitHub Actions and Cloudflare Pages.
+My application for the Lead Web Engineer role at Genki, built as a small one-page site with the same stack and guardrails I'd use at work: Astro, TypeScript, SCSS Modules, one React island, GitHub Actions and Cloudflare.
+
+Live at **https://liam-trubshaw.liam-e71.workers.dev**.
 
 I built it with Claude Code. The prompts I used, what worked and what I changed are in [`PROMPTS.md`](PROMPTS.md), and the rules the agent worked to are in [`CLAUDE.md`](CLAUDE.md).
 
@@ -49,27 +51,27 @@ A failing Playwright run uploads its report and traces as an artifact. Dependabo
 
 ## How deploys happen
 
-Cloudflare Pages deploys straight from GitHub through its Git integration, so there are no Cloudflare tokens in GitHub.
+The site is a Cloudflare Worker that only serves static files, deployed by Workers Builds straight from GitHub, so there are no Cloudflare tokens in GitHub. `wrangler.jsonc` holds the config: the Worker's name, `dist/` as the assets folder, and `404.html` for unknown paths.
 
-- Every pull request gets its own preview URL, posted on the pull request.
+- Every pull request gets its own preview URL, reported in the pull request's checks.
 - Merging to `main` deploys to production.
-- Branch protection on `main` requires the CI check to pass before merging.
+- A ruleset on `main` requires a pull request and a passing CI check, with no force-pushes and no bypass. Pull requests can auto-merge once CI passes.
 
-Cloudflare Pages settings:
+Workers Builds settings, in the Worker's **Settings** → **Build**:
 
-| Setting                | Value           |
-| ---------------------- | --------------- |
-| Framework preset       | Astro           |
-| Build command          | `npm run build` |
-| Build output directory | `dist`          |
-| Node version           | from `.nvmrc`   |
+| Setting                              | Value                          |
+| ------------------------------------ | ------------------------------ |
+| Build command                        | `npm run build`                |
+| Deploy command                       | `npx wrangler deploy`          |
+| Non-production branch deploy command | `npx wrangler versions upload` |
+| Node version                         | from `.nvmrc`                  |
 
 ## Security headers
 
 Two layers, because neither can do the whole job alone:
 
 - **Astro's `<meta>` CSP** (`security.csp` in `astro.config.mjs`). Astro hashes every inline script and style it emits, including the island's hydration script, so `script-src` and `style-src` never need `'unsafe-inline'`.
-- **`public/_headers`** for Cloudflare Pages: HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options`, `Cross-Origin-Opener-Policy`, and a CSP header for `frame-ancestors`, which a `<meta>` tag can't set. Fingerprinted files in `/_astro/` are cached for a year.
+- **`public/_headers`**, which Cloudflare applies to the static files: HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options`, `Cross-Origin-Opener-Policy`, and a CSP header for `frame-ancestors`, which a `<meta>` tag can't set. Fingerprinted files in `/_astro/` are cached for a year.
 
 ## Project layout
 
@@ -83,4 +85,5 @@ src/
   styles/                  reset, design tokens and SCSS mixins
 tests/smoke.spec.ts        Playwright smoke test
 content.md                 the page copy, which components use word for word
+wrangler.jsonc             Cloudflare Workers config
 ```
