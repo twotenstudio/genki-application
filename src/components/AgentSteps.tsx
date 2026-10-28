@@ -24,6 +24,50 @@ function pad(n: number): string {
   return String(n).padStart(2, '0');
 }
 
+/** Renders `code` spans in a line of step text. */
+function Inline({ text }: { text: string }) {
+  return (
+    <>
+      {text.split('`').map((part, index) =>
+        index % 2 ? (
+          <code key={index} className={styles.code}>
+            {part}
+          </code>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+}
+
+/**
+ * Step notes are plain text with the same light markup as PROMPTS.md: blank lines between
+ * paragraphs, "- " bullet lists and `code` spans. Kept to that so the two files stay identical.
+ */
+function Notes({ text }: { text: string }) {
+  return (
+    <>
+      {text.split('\n\n').map((block, index) => {
+        const lines = block.split('\n');
+        return lines.every((line) => line.startsWith('- ')) ? (
+          <ul key={index} className={styles.notesList}>
+            {lines.map((line, item) => (
+              <li key={item}>
+                <Inline text={line.slice(2)} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p key={index}>
+            <Inline text={block} />
+          </p>
+        );
+      })}
+    </>
+  );
+}
+
 function StepBody({ step }: { step: AgentStep }) {
   return (
     <div className={styles.body}>
@@ -35,11 +79,11 @@ function StepBody({ step }: { step: AgentStep }) {
       </div>
       <div className={styles.part}>
         <h4 className={styles.label}>What worked</h4>
-        <p>{step.worked}</p>
+        <Notes text={step.worked} />
       </div>
       <div className={styles.part}>
         <h4 className={styles.label}>What I changed</h4>
-        <p>{step.changed}</p>
+        <Notes text={step.changed} />
       </div>
     </div>
   );
