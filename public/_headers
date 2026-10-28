@@ -1,0 +1,18 @@
+# Cloudflare Pages headers. https://developers.cloudflare.com/pages/configuration/headers/
+#
+# script-src and style-src are set per page by Astro's <meta> CSP, which hashes every
+# inline script and style it emits. This header carries the directives a <meta> CSP
+# can't (frame-ancestors) and repeats the ones that should never be loosened.
+
+/*
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'none'; object-src 'none'; form-action 'none'
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# Astro fingerprints everything in /_astro/, so it can be cached forever.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
