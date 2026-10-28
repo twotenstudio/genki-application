@@ -1,0 +1,16 @@
+// Breakpoints as mixins, since custom properties don't work in media queries.
+
+$tablet: 40rem;
+$desktop: 64rem;
+
+@mixin tablet {
+  @media (min-width: $tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $desktop) {
+    @content;
+  }
+}

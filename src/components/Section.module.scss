@@ -1,0 +1,41 @@
+@use '../styles/mq';
+@use '../styles/utils';
+
+.section {
+  display: grid;
+  gap: var(--space-5);
+  padding-block: var(--space-8);
+  border-top: 1px solid var(--color-border);
+
+  @include mq.desktop {
+    grid-template-columns: 16rem 1fr;
+    gap: var(--space-7);
+    padding-block: var(--space-9);
+  }
+}
+
+.header {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+
+  @include mq.desktop {
+    position: sticky;
+    top: var(--space-6);
+  }
+}
+
+.number {
+  @include utils.eyebrow;
+
+  color: var(--color-accent);
+}
+
+.title {
+  font-size: var(--step-2);
+  letter-spacing: -0.01em;
+}
+
+.body {
+  min-width: 0;
+}

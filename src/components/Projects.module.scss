@@ -1,0 +1,69 @@
+@use '../styles/mq';
+@use '../styles/utils';
+
+.grid {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0;
+  list-style: none;
+
+  @include mq.tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  display: flex;
+}
+
+.article {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: var(--shadow);
+
+  @include mq.desktop {
+    padding: var(--space-6);
+  }
+}
+
+// The first card is the headline project, so it spans both columns on tablet.
+.card:first-child {
+  @include mq.tablet {
+    grid-column: 1 / -1;
+  }
+}
+
+.title {
+  font-size: var(--step-1);
+}
+
+.meta {
+  @include utils.eyebrow;
+}
+
+.description {
+  max-width: var(--measure);
+  color: var(--color-ink-muted);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding: var(--space-2) 0 0;
+  list-style: none;
+}
+
+.tag {
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  background: var(--color-code);
+  font-size: var(--step--1);
+}

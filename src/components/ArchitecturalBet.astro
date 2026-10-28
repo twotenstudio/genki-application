@@ -1,0 +1,18 @@
+---
+import styles from './ArchitecturalBet.module.scss';
+---
+
+<div class={styles.copy}>
+  <p>
+    At Frame Foundry I put every customer organisation in one shared Postgres database, with a
+    tenant ID on every row. For a small team shipping weekly, one schema meant one set of
+    migrations, one backup and one place to look when something broke. A database per tenant would
+    have multiplied that work before we had the customers to justify it.
+  </p>
+  <p>
+    The cost is that isolation depends on every query remembering its tenant filter, and one missed
+    filter could show one organisation another's data. So once the data model settled, I rolled out
+    row-level security. Now the database itself blocks access to other organisations' rows, and the
+    filter in the application is the first check rather than the only one.
+  </p>
+</div>

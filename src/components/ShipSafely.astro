@@ -1,0 +1,37 @@
+---
+import styles from './ShipSafely.module.scss';
+
+const guardrails = [
+  {
+    title: 'Starter templates.',
+    body: 'New pages and components start from a shared starter with the design tokens, accessibility defaults and tests already in place.',
+  },
+  {
+    title: 'Required review.',
+    body: 'Every change goes through a pull request, and an engineer reviews anything that touches shared components.',
+  },
+  {
+    title: 'Automated checks.',
+    body: 'CI runs lint, type checks, Playwright tests and Lighthouse on every pull request, so the obvious problems are caught before a person has to look.',
+  },
+  {
+    title: 'Preview deploys.',
+    body: 'Every pull request gets its own preview URL, so whoever made the change can check it on a real phone before anything reaches production.',
+  },
+];
+---
+
+<div class={styles.wrap}>
+  <p class={styles.lede}>
+    At TwoTen I built libraries of React blocks with guardrails, so marketing teams could build and
+    publish pages without a developer. At Genki I'd set it up the same way.
+  </p>
+  <ol class={styles.list}>
+    {guardrails.map((item) => (
+      <li class={styles.item}>
+        <strong class={styles.itemTitle}>{item.title}</strong> {item.body}
+      </li>
+    ))}
+  </ol>
+  <p class={styles.note}>This page is built and deployed the same way.</p>
+</div>

@@ -1,0 +1,38 @@
+@use '../styles/mq';
+@use '../styles/utils';
+
+.list {
+  display: grid;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.item {
+  display: grid;
+  gap: var(--space-1);
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+
+  @include mq.tablet {
+    grid-template-columns: 8rem 1fr;
+    align-items: baseline;
+    gap: var(--space-5);
+  }
+}
+
+.label {
+  @include utils.eyebrow;
+}
+
+.link {
+  font-size: var(--step-1);
+  overflow-wrap: anywhere;
+}
+
+.footer {
+  margin-top: var(--space-8);
+  padding-bottom: var(--space-6);
+  font-size: var(--step--1);
+  color: var(--color-ink-muted);
+}

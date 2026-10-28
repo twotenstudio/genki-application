@@ -1,0 +1,45 @@
+---
+import styles from './Links.module.scss';
+
+// Update if the repo moves.
+const repoUrl = 'https://github.com/twotenstudio/genki-application';
+
+const links = [
+  {
+    label: 'Email',
+    text: 'liamtrubshaw@gmail.com',
+    href: 'mailto:liamtrubshaw@gmail.com',
+  },
+  {
+    label: 'LinkedIn',
+    text: 'linkedin.com/in/liam-trubshaw',
+    href: 'https://www.linkedin.com/in/liam-trubshaw',
+    rel: 'me',
+  },
+  {
+    label: 'GitHub',
+    text: 'The source for this page, with the prompts and CI',
+    href: repoUrl,
+  },
+  {
+    label: 'CV',
+    text: 'Download my CV (PDF)',
+    href: '/liam-trubshaw-cv.pdf',
+    download: 'Liam-Trubshaw-CV.pdf',
+  },
+];
+---
+
+<ul class={styles.list}>
+  {links.map((link) => (
+    <li class={styles.item}>
+      <span class={styles.label}>{link.label}</span>
+      <a class={styles.link} href={link.href} rel={link.rel} download={link.download}>
+        {link.text}
+      </a>
+    </li>
+  ))}
+</ul>
+<footer class={styles.footer}>
+  <p>Built with Astro, TypeScript and SCSS Modules. Hosted on Cloudflare Pages.</p>
+</footer>

@@ -1,0 +1,51 @@
+---
+import styles from './Projects.module.scss';
+
+interface Project {
+  title: string;
+  meta: string;
+  description: string;
+  tags: string[];
+}
+
+const projects: Project[] = [
+  {
+    title: 'Frame Foundry',
+    meta: 'Co-Founder, 2026 to now',
+    description:
+      'A multi-tenant SaaS membership platform, taken from idea to paying customers in 6 months. I built it end to end in Next.js, React and TypeScript, with 81 tables and 70 migrations in Prisma, a preview deployment for every change and weekly releases behind feature flags. Tenants are isolated with row-level security in Postgres.',
+    tags: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Vercel'],
+  },
+  {
+    title: 'Events platform on Amazon EKS',
+    meta: 'TwoTen Studio, during Covid',
+    description:
+      'A WordPress Multisite virtual events platform for a large London events agency. I architected it, containerised it with Docker and load-balanced it on Amazon EKS.',
+    tags: ['Docker', 'Amazon EKS', 'WordPress Multisite'],
+  },
+  {
+    title: 'Shared starter codebases and block libraries',
+    meta: 'TwoTen Studio, 2018 to now',
+    description:
+      'Starter codebases, component libraries and plugins shared across many client sites, so every new project started from the same foundations. Libraries of React blocks with guardrails let non-technical marketing teams build and publish pages safely without a developer.',
+    tags: ['React', 'TypeScript', 'GitHub Actions', 'Playwright'],
+  },
+];
+---
+
+<ul class={styles.grid}>
+  {projects.map((project) => (
+    <li class={styles.card}>
+      <article class={styles.article}>
+        <h3 class={styles.title}>{project.title}</h3>
+        <p class={styles.meta}>{project.meta}</p>
+        <p class={styles.description}>{project.description}</p>
+        <ul class={styles.tags} aria-label="Technologies">
+          {project.tags.map((tag) => (
+            <li class={styles.tag}>{tag}</li>
+          ))}
+        </ul>
+      </article>
+    </li>
+  ))}
+</ul>

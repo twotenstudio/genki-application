@@ -1,0 +1,55 @@
+@use '../styles/mq';
+
+.wrap {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.lede {
+  max-width: var(--measure);
+  font-size: var(--step-1);
+  line-height: 1.5;
+}
+
+.list {
+  display: grid;
+  gap: var(--space-3);
+  padding: 0;
+  list-style: none;
+  counter-reset: guardrail;
+
+  @include mq.tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.item {
+  position: relative;
+  padding: var(--space-5);
+  padding-top: calc(var(--space-5) + 1.75rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-ink-muted);
+  counter-increment: guardrail;
+
+  &::before {
+    content: counter(guardrail, decimal-leading-zero);
+    position: absolute;
+    top: var(--space-5);
+    left: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-accent);
+  }
+}
+
+.itemTitle {
+  display: block;
+  margin-bottom: var(--space-1);
+  color: var(--color-ink);
+}
+
+.note {
+  color: var(--color-ink-muted);
+}
