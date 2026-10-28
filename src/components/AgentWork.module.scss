@@ -1,0 +1,17 @@
+.wrap {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.copy {
+  display: grid;
+  gap: var(--space-4);
+  max-width: var(--measure);
+  color: var(--color-ink-muted);
+}
+
+.lede {
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--color-ink);
+}

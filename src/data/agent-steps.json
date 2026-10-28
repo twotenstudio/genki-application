@@ -1,0 +1,51 @@
+[
+  {
+    "id": "rules",
+    "title": "Project rules",
+    "prompt": "Create a CLAUDE.md for this project. It's a one-page job application site built with Astro, TypeScript and SCSS Modules, deployed to Cloudflare Pages.\n\nRules:\n- TypeScript strict mode, no `any`\n- SCSS Modules only, no global styles except a small reset and design tokens\n- Accessibility first: semantic HTML, visible focus states, WCAG 2.2 AA contrast, works without JavaScript except the one React island\n- Keep JavaScript shipped to the browser to a minimum\n- Every change must pass lint, type check and the Playwright smoke test before it's done\n- Ask me before adding any dependency",
+    "worked": "It turned my rules into a definition of done with the exact commands to run, so every later step had something concrete to check against.",
+    "changed": "I added two rules of my own: use my copy exactly as written and flag anything that looks wrong instead of rewriting it, and no em dashes anywhere."
+  },
+  {
+    "id": "plan",
+    "title": "Plan first",
+    "prompt": "Read CLAUDE.md. Plan the site before writing code. Propose the file structure, the components, the design tokens and the CI setup. Don't write any code yet. Keep the plan short and point out anything you're unsure about.",
+    "worked": "It flagged the real risks up front: Astro's inline hydration scripts under a strict CSP, and layout shift when the plain list turns into tabs.",
+    "changed": "It planned a custom post-build script to hash inline scripts into the CSP. Astro 7 has this built in as security.csp, so I dropped the script and kept _headers for the one directive a meta tag can't carry."
+  },
+  {
+    "id": "scaffold",
+    "title": "Scaffold and tooling",
+    "prompt": "Scaffold the Astro project from the agreed plan. Add ESLint, Prettier, a strict tsconfig, Playwright with one smoke test that loads the page and checks the main headings, and a GitHub Actions workflow that runs lint, type check, the Playwright test and a Lighthouse check on every pull request. Don't build the page content yet.",
+    "worked": "A strict tsconfig, a flat ESLint config and a CI workflow that runs the same commands as the definition of done, in the same order.",
+    "changed": "Latest everything didn't fit together. Astro 7 needs a newer Node than I had, so I pinned Node 24 LTS. TypeScript 7 isn't supported by typescript-eslint or astro check yet, so I pinned 6.0, and I used the maintained fork of jsx-a11y because the original doesn't support ESLint 10."
+  },
+  {
+    "id": "sections",
+    "title": "Build the sections",
+    "prompt": "Build the page sections from the plan as Astro components with SCSS Modules. Use the content in content.md exactly as written, don't rewrite my copy. Mobile first, then tablet and desktop. No JavaScript yet.",
+    "worked": "Each section is one Astro component and one SCSS Module, and the copy matches content.md word for word.",
+    "changed": "It added a skip link, but there's no navigation before the main content, so it skipped nothing. I took it out."
+  },
+  {
+    "id": "island",
+    "title": "The prompts island",
+    "prompt": "Build one React island for the \"How I work with AI agents\" section. It reads steps from a typed JSON file (prompt, what worked, what I changed). It should be keyboard accessible, work with a screen reader, and show all steps as a plain list if JavaScript is off. Keep it small.",
+    "worked": "The server renders every step as a list. After hydration it becomes a proper ARIA tabs pattern with arrow keys, Home and End, so readers without JavaScript lose nothing.",
+    "changed": "Pending review."
+  },
+  {
+    "id": "review",
+    "title": "Review pass",
+    "prompt": "Review the whole project as a senior engineer would before a release. Check accessibility, performance, security headers for Cloudflare Pages, unused code and anything that breaks the rules in CLAUDE.md. List the issues first, then fix them one at a time with a short note on each.",
+    "worked": "Pending review.",
+    "changed": "Pending review."
+  },
+  {
+    "id": "deploy",
+    "title": "Headers and deploy",
+    "prompt": "Add a Cloudflare Pages _headers file with a sensible Content Security Policy, HSTS, X-Content-Type-Options, Referrer-Policy and Permissions-Policy. Make sure the React island still works under the CSP. Then write a short README covering how to run it locally, how CI works and how deploys happen.",
+    "worked": "Pending review.",
+    "changed": "Pending review."
+  }
+]

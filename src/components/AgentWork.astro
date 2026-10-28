@@ -1,0 +1,18 @@
+---
+import { agentSteps } from '../data/agent-steps';
+import AgentSteps from './AgentSteps';
+import styles from './AgentWork.module.scss';
+---
+
+<div class={styles.wrap}>
+  <div class={styles.copy}>
+    <p class={styles.lede}>
+      I use Claude Code every day, and over the last 2 years I rebuilt my team's workflow around it.
+      I give it clear rules and a plan to work to, then check what it produces through review and
+      automated tests before anything ships.
+    </p>
+    <p>These are the real prompts from building this page, with what worked and what I changed.</p>
+  </div>
+  {/* Hydrates well before it scrolls into view, so the first load ships no JavaScript. */}
+  <AgentSteps client:visible={{ rootMargin: '600px' }} steps={agentSteps} />
+</div>

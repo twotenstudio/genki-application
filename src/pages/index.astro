@@ -1,0 +1,35 @@
+---
+import AgentWork from '../components/AgentWork.astro';
+import ArchitecturalBet from '../components/ArchitecturalBet.astro';
+import Intro from '../components/Intro.astro';
+import Links from '../components/Links.astro';
+import Projects from '../components/Projects.astro';
+import Section from '../components/Section.astro';
+import ShipSafely from '../components/ShipSafely.astro';
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Liam Trubshaw, Lead Web Engineer application for Genki"
+  description="Liam Trubshaw's application for Lead Web Engineer at Genki: what I've built, an architectural bet I lived with, and how I work with AI agents."
+>
+  <main id="main">
+    <Intro />
+    <Section id="built" number="01" title="What I've built">
+      <Projects />
+    </Section>
+    <Section id="bet" number="02" title="An architectural bet I lived with">
+      <ArchitecturalBet />
+    </Section>
+    <Section id="agents" number="03" title="How I work with AI agents">
+      <AgentWork />
+    </Section>
+    {/* A non-breaking hyphen (U+2011) keeps "non-engineers" whole in the desktop heading column. */}
+    <Section id="ship-safely" number="04" title="Letting non‑engineers ship safely">
+      <ShipSafely />
+    </Section>
+    <Section id="links" number="05" title="Links">
+      <Links />
+    </Section>
+  </main>
+</Base>

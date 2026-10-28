@@ -1,0 +1,168 @@
+@use '../styles/mq';
+@use '../styles/utils';
+
+// Shared by the no-JavaScript list and the tabs.
+
+.stepTitle {
+  font-size: var(--step-1);
+}
+
+.stepNumber {
+  display: block;
+  margin-bottom: var(--space-1);
+
+  @include utils.eyebrow;
+
+  color: var(--color-accent);
+}
+
+.body {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+}
+
+.part {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--color-ink-muted);
+}
+
+.label {
+  @include utils.eyebrow;
+
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.prompt {
+  padding: var(--space-4);
+  border-radius: var(--radius-small);
+  background: var(--color-code);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+// No JavaScript: every step as a plain list.
+
+.list {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.listItem {
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+// With JavaScript: tabs.
+
+.tabs {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.tablist {
+  display: flex;
+  gap: var(--space-2);
+
+  @include mq.desktop {
+    flex-wrap: wrap;
+  }
+}
+
+// Below desktop the numbered tabs share one row, so all steps stay visible.
+.tab {
+  flex: 1 1 0;
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-ink-muted);
+  border-radius: 999px;
+  background: var(--color-surface);
+  font-size: var(--step--1);
+  cursor: pointer;
+  justify-content: center;
+
+  @include mq.desktop {
+    flex: 0 0 auto;
+  }
+
+  &:hover {
+    border-color: var(--color-accent);
+  }
+
+  &[aria-selected='true'] {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+}
+
+.tabNumber {
+  font-family: var(--font-mono);
+}
+
+// On phones the tabs show numbers only. The title stays in the accessible name.
+.tabTitle {
+  @include utils.visually-hidden;
+
+  @include mq.desktop {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+}
+
+.panel {
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: var(--shadow);
+
+  @include mq.desktop {
+    padding: var(--space-6);
+  }
+}
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.pagerButton {
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-ink-muted);
+  border-radius: var(--radius-small);
+  background: transparent;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
