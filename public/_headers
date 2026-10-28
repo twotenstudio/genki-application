@@ -1,4 +1,4 @@
-# Cloudflare Pages headers. https://developers.cloudflare.com/pages/configuration/headers/
+# Cloudflare static asset headers. https://developers.cloudflare.com/workers/static-assets/headers/
 #
 # script-src and style-src are set per page by Astro's <meta> CSP, which hashes every
 # inline script and style it emits. This header carries the directives a <meta> CSP

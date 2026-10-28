@@ -1,0 +1,15 @@
+// Cloudflare Workers config: a static site, no Worker code.
+// Workers Builds runs `npm run build`, then `wrangler deploy` on main and
+// `wrangler versions upload` (a preview URL) on every other branch.
+{
+  // Must match the Worker's name in the Cloudflare dashboard.
+  "name": "liam-trubshaw",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./dist",
+    // Serve dist/404.html with a 404 status for unknown paths, instead of an empty response.
+    "not_found_handling": "404-page",
+  },
+}
